@@ -1,11 +1,14 @@
 module GO
 
-go 1.17
+go 1.21
+
+toolchain go1.22.1
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.32.0-20240221180331-f05a6f4403ce.1 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.0 // indirect
 	github.com/bufbuild/protovalidate-go v0.6.0 // indirect
+	github.com/cerbos/cerbos v0.34.0 // indirect
 	github.com/cerbos/cerbos-sdk-go v0.2.3 // indirect
 	github.com/cerbos/cerbos/api/genpb v0.34.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -33,7 +36,7 @@ require (
 	github.com/stretchr/testify v1.9.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
-	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
+	golang.org/x/exp v0.0.0-20240213143201-ec583247a57a // indirect
 	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect

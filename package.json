@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "cerbos": "^0.34.0",
+    "cerbosctl": "^0.34.0"
+  }
+}
