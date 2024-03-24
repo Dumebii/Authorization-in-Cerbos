@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
 	"github.com/gorilla/mux"
 	"github.com/cerbos/cerbos-sdk-go/cerbos"
 )
