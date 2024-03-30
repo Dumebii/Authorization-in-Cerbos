@@ -1,0 +1,16 @@
+---
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+version: default
+resource: dashboard
+rules:
+# Admins can do all actions
+- actions: ["*"]
+    effect: EFFECT_ALLOW
+    roles:
+    - admin    
+# Users create and update on the dashboard
+- actions: ["update", "create"]
+    effect: EFFECT_ALLOW
+    roles:
+    - user

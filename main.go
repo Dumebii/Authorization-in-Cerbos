@@ -1,48 +1,77 @@
 package main
 
 import (
-	"context"
 	"fmt"
-	"log"
 	"net/http"
-	"github.com/gorilla/mux"
+
 	"github.com/cerbos/cerbos-sdk-go/cerbos"
+	"github.com/gorilla/mux"
+	"github.com/gorilla/sessions"
 )
 
+var store = sessions.NewCookieStore([]byte("your-secret-key"))
+var c, err = cerbos.New("localhost:3593", cerbos.WithPlaintext())
+	
+
+
 func main() {
-	// Initialize Cerbos client
-	client, err := cerbos.New("unix:/var/sock/cerbos", cerbos.WithTLSCACert("/path/to/ca.crt"))
-	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
+
+	r := mux.NewRouter()
+	r.HandleFunc("/login", loginHandler).Methods("POST")
+	r.HandleFunc("/logout", logoutHandler).Methods("GET")
+	r.HandleFunc("/dashboard", dashboardHandler).Methods("GET")
+	http.Handle("/", r)
+	http.ListenAndServe(":8080", nil)
+
+}
+
+func loginHandler(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "session-name")
+
+	// Check credentials
+	username := r.FormValue("username")
+	password := r.FormValue("password")
+
+	// Validate credentials
+	if username == "user" && password == "password" {
+		session.Values["authenticated"] = true
+		session.Save(r, w)
+		http.Redirect(w, r, "/dashboard", http.StatusSeeOther)
+	} else {
+		fmt.Fprintln(w, "Invalid credentials. Please try again.")
+	}
+}
+
+func logoutHandler(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "session-name")
+	session.Values["authenticated"] = false
+	session.Save(r, w)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func dashboardHandler(w http.ResponseWriter, r *http.Request) {
+
+	
+	session, _ := store.Get(r, "session-name")
+
+	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
 	}
 
-	// Create a new Gorilla router
-	r := mux.NewRouter()
+	// Check access using Cerbos
+	principal := cerbos.NewPrincipal("admin", "user")
+	resource := cerbos.NewResource("dashboard", "user_profile")
+	decision, err := c.IsAllowed(r.Context(), principal, resource, "update")
+	if err != nil {
+		http.Error(w, "Error checking access", http.StatusInternalServerError)
+		return
+	}
 
-	// Define a Gorilla handler function
-	r.HandleFunc("/resource/{id}", func(w http.ResponseWriter, r *http.Request) {
-		// Extract parameters from the request
-		vars := mux.Vars(r)
-		resourceID := vars["id"]
-
-		// Perform authorization check
-		allowed, err := client.IsAllowed(context.TODO(), cerbos.NewPrincipal("sally").WithRoles("user"), cerbos.NewResource("album:object", resourceID), "view")
-		if err != nil {
-			http.Error(w, "Authorization check failed", http.StatusInternalServerError)
-			return
-		}
-
-		if !allowed {
-			http.Error(w, "Unauthorized", http.StatusForbidden)
-			return
-		}
-
-		// Authorized - Proceed with handling the request
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Authorized to view resource"))
-	})
-
-	// Start the HTTP server with the Gorilla router
-	log.Println("Starting server on :8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	if decision {
+		fmt.Fprintln(w, "Welcome to the dashboard!")
+	} else {
+		http.Error(w, "Access denied", http.StatusForbidden)
+	}
 }
+
