@@ -1,8 +1,0 @@
-policies:
-  - id: "allow_read_data"
-    description: "Allow read access to data"
-    resources:
-      - resource: "data"
-    actions:
-      - action: "read"
-    effect: "allow"
