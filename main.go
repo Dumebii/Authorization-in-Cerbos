@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-
 	"github.com/cerbos/cerbos-sdk-go/cerbos"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
