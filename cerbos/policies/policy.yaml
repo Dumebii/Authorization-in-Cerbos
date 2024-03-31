@@ -8,7 +8,7 @@ rules:
 - actions: ["*"]
     effect: EFFECT_ALLOW
     roles:
-    - admin    
+    - admin   
 # Users create and update on the dashboard
 - actions: ["update", "create"]
     effect: EFFECT_ALLOW
