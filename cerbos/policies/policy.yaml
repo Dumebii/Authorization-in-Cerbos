@@ -1,3 +1,32 @@
+<<<<<<< HEAD
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  resource: dashboardResource
+  version: default
+  rules:
+    - actions:
+        - create
+      effect: EFFECT_ALLOW
+      roles:
+        - user
+        - admin
+    - actions:
+        - read
+      effect: EFFECT_ALLOW
+      roles:
+        - user
+        - admin
+    - actions:
+        - update
+      effect: EFFECT_ALLOW
+      roles:
+        - admin
+    - actions:
+        - delete
+      effect: EFFECT_ALLOW
+      roles:
+        - admin
+=======
 ---
 apiVersion: api.cerbos.dev/v1
 resourcePolicy:
@@ -14,3 +43,4 @@ rules:
     effect: EFFECT_ALLOW
     roles:
     - user
+>>>>>>> bf538124ed9e4faf9a49d5b3a1f3817d7b48896a

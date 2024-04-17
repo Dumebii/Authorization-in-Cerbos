@@ -1,8 +1,12 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"net/http"
+	"time"
+
 	"github.com/cerbos/cerbos-sdk-go/cerbos"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
@@ -59,18 +63,27 @@ func dashboardHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Check access using Cerbos
-	principal := cerbos.NewPrincipal("admin", "user")
-	resource := cerbos.NewResource("dashboard", "user_profile")
-	decision, err := c.IsAllowed(r.Context(), principal, resource, "update")
+	ctx, cancelFunc := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancelFunc()
+	
+	decisions, err := c.CheckResourceSet(
+	  ctx,
+	  client.NewPrincipal("user#1").
+		WithRoles("user").
+		WithAttributes(map[string]interface{}{
+		}),
+	  client.NewResourceSet("dashboardResource").
+		AddResourceInstance("dashboardResource#1", map[string]interface{}{
+		}), "create", "delete", "read", "update")
+	  
+	
 	if err != nil {
-		http.Error(w, "Error checking access", http.StatusInternalServerError)
-		return
+	  log.Fatalf("Error while checking resource set: %v", err)
 	}
-
-	if decision {
-		fmt.Fprintln(w, "Welcome to the dashboard!")
-	} else {
-		http.Error(w, "Access denied", http.StatusForbidden)
+	
+	
+	for _, action := range []string{"create", "delete", "read", "update"} {
+	  fmt.Printf("\t%s -> %t\n", action, decisions.IsAllowed("dashboardResource#1", action))
 	}
 }
 
