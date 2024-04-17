@@ -85,5 +85,6 @@ func dashboardHandler(w http.ResponseWriter, r *http.Request) {
 	for _, action := range []string{"create", "delete", "read", "update"} {
 	  fmt.Printf("\t%s -> %t\n", action, decisions.IsAllowed("dashboardResource#1", action))
 	}
+	
 }
 
