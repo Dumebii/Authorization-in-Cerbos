@@ -13,7 +13,7 @@ import (
 )
 
 var store = sessions.NewCookieStore([]byte("your-secret-key"))
-var c, err = cerbos.New("localhost:3593", cerbos.WithPlaintext())
+var c, err = client.New("localhost:3593", cerbos.WithPlaintext())
 	
 
 
