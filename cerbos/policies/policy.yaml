@@ -1,30 +1,28 @@
-# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
-# docs: https://docs.cerbos.dev/cerbos/latest/policies/resource_policies
-
 apiVersion: api.cerbos.dev/v1
 resourcePolicy:
-  resource: dashboardResource
+  resource: attendanceResource
   version: default
+    importDerivedRoles:
+    - common_roles
   rules:
     - actions:
-        - create
+        - *
       effect: EFFECT_ALLOW
       roles:
-        - user
         - admin
     - actions:
         - read
       effect: EFFECT_ALLOW
-      roles:
+      role: 
         - user
-        - admin
     - actions:
         - update
       effect: EFFECT_ALLOW
-      roles:
-        - admin
+      derivedRoles:
+        - rep
+        - assistant_rep
     - actions:
         - delete
       effect: EFFECT_ALLOW
-      roles:
-        - admin
+      derivedRoles:
+        - course_lecturer
