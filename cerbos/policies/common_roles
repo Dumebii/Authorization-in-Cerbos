@@ -1,0 +1,25 @@
+---
+apiVersion: "api.cerbos.dev/v1"
+description: |-
+  Common dynamic roles used within the app
+derivedRoles:
+  name: common_roles
+  definitions:
+
+  - name: REP
+    parentRoles: ["USER"]
+    condition:
+      match:
+        expr: request.principal.attr.category == "REP"
+        
+  - name: COURSE_LECTURER
+    parentRoles: ["USER"]
+    condition:
+      match:
+        expr: request.principal.attr.category == "LECTURER"
+
+   - name: ASSISTANT_REP
+      parentRoles: ["USER"]
+      condition:
+        match:
+          expr: request.principal.attr.category == "ASSISTANT_REP"
