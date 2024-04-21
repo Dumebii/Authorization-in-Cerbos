@@ -6,7 +6,10 @@ resourcePolicy:
     - common_roles
   rules:
     - actions:
-        - *
+        - create
+        - read
+        - update
+        - delete
       effect: EFFECT_ALLOW
       roles:
         - admin
