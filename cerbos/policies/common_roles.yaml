@@ -6,20 +6,21 @@ derivedRoles:
   name: common_roles
   definitions:
 
-  - name: REP
-    parentRoles: ["USER"]
-    condition:
-      match:
-        expr: request.principal.attr.category == "REP"
-        
-  - name: COURSE_LECTURER
-    parentRoles: ["USER"]
-    condition:
-      match:
-        expr: request.principal.attr.category == "LECTURER"
-
-   - name: ASSISTANT_REP
-      parentRoles: ["USER"]
+  - name: rep
+    parentRoles: 
+       - USER
+       
+  - name: OWNER
+      parentRoles:
+        - USER
       condition:
         match:
-          expr: request.principal.attr.category == "ASSISTANT_REP"
+          expr: request.resource.attr.ownerId == request.principal.id
+          
+  - name: course_lecturer
+    parentRoles: 
+       - USER
+       
+   - name: assistant_rep
+      parentRoles: 
+         - USER
