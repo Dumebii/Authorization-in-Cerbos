@@ -1,0 +1,200 @@
+{
+	"info": {
+		"_postman_id": "9e6d78c5-8543-4557-93e6-2e0f40388258",
+		"name": "Cerbos Integration Tests",
+		"description": "Tests for the Go application with Cerbos integration",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Dashboard - Admin Role",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Admin role has access to all actions\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Cerbos-Principal",
+						"value": "{\"id\":\"user#1\",\"roles\":[\"admin\"]}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/dashboard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dashboard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dashboard - User Role (REP)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User role with REP attribute can view and update\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Cerbos-Principal",
+						"value": "{\"id\":\"user#2\",\"roles\":[\"user\"],\"attr\":{\"category\":[\"rep\"]}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/dashboard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dashboard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dashboard - User Role (ASSISTANT_REP)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User role with ASSISTANT_REP attribute can update\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Cerbos-Principal",
+						"value": "{\"id\":\"user#3\",\"roles\":[\"user\"],\"attr\":{\"category\":[\"assistant_rep\"]}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/dashboard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dashboard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dashboard - User Role (COURSE_LECTURER)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User role with COURSE_LECTURER attribute can delete\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Cerbos-Principal",
+						"value": "{\"id\":\"user#4\",\"roles\":[\"user\"],\"attr\":{\"category\":[\"course_lecturer\"]}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/dashboard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dashboard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dashboard - User Role (No Attributes)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User role with no attributes can only read\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Cerbos-Principal",
+						"value": "{\"id\":\"user#5\",\"roles\":[\"user\"]}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/dashboard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"dashboard"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
